@@ -1,17 +1,22 @@
-/*
-L'utente indica un livello di difficoltà in base al quale viene generata una griglia di gioco quadrata,
-    in cui ogni cella contiene un numero tra quelli compresi in un range:
-        con difficoltà 1 => tra 1 e 100
-        con difficoltà 2 => tra 1 e 81
-        con difficoltà 3 => tra 1 e 49
+/* Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
+    --I numeri nella lista delle bombe non possono essere duplicati.--
+        In seguito l'utente clicca su ogni cella:
+            se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina,
+            altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle altre celle.
 
-    Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro.
+            La partita termina quando
+                -il giocatore clicca su una bomba
+                -o raggiunge il numero massimo possibile di numeri consentiti. (numero celle - 16)
 
-*/
 
+    Al termine della partita il software deve scoprire tutte le bombe e comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. */
+
+
+let is_game_in_progress = false;
 const btnSubmit = document.getElementById("btn-start-game")
 const btnLevel = document.getElementById("levelup")
 const gameContainer = document.getElementById("boxgame")
+const resultContainer = document.getElementById("result")
 let bombs; //bombe
 let count = 0;
 let numberCellToAdd;
@@ -22,6 +27,9 @@ let cell;
 
 
 btnSubmit.addEventListener("click", function() {
+
+
+
     difficoltLevel = btnLevel.value
     numberCellToAdd = cellNumber(difficoltLevel)
     bombs = bombNumberGenerator(numberCellToAdd)
@@ -33,6 +41,8 @@ btnSubmit.addEventListener("click", function() {
 
 
     //creo la griglia
+    is_game_in_progress = true;
+    console.log(is_game_in_progress);
     for (let index = 1; index <= numberCellToAdd; index++) {
         cell = document.createElement("div")
         cell.classList.add("cel-box-" + Math.round(numberCol))
@@ -65,34 +75,28 @@ function cellNumber(difficoltLevel) {
 
 // in base al alla variabile numerototale di celle io andrò a creare un tot di quadrati
 function cellonclick(event) {
-
-    count++;
-    console.log(count)
     let cellclick = parseInt(event.target.innerText)
     if (bombs.includes(cellclick)) {
-        this.classList.toggle('bomb')
-            /* gameContainer.innerHTML = `<h1 class="mb-0 h-100 w-100 text-center end-game">Hai Perso </h1> ` */
+        is_game_in_progress = false;
+        this.classList.add('bomb')
+        console.log(is_game_in_progress);
+        resultContainer.innerHTML = `<h1 class="mb-0 h-100 w-100 text-center end-game">Hai Perso </h1> `
+
+    } else {
+        is_game_in_progress = true;
+        this.classList.toggle("active")
+        if (is_game_in_progress == true) {
+            console.log('gioca');
+        } else {
+            console.log('interrompi');
+        }
+
     }
-    this.classList.toggle("active")
 
 }
 
-/* Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
-    --I numeri nella lista delle bombe non possono essere duplicati.--
-        In seguito l'utente clicca su ogni cella:
-            se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina,
-            altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle altre celle.
-
-            La partita termina quando
-                -il giocatore clicca su una bomba
-                -o raggiunge il numero massimo possibile di numeri consentiti. (numero celle - 16)
-
-
-    Al termine della partita il software deve scoprire tutte le bombe e comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. */
-
 
 //generare le bombe
-
 function bombNumberGenerator(numberCellToAdd) {
     const arrayBombs = []
     while (arrayBombs.length < 16) {

@@ -1,6 +1,13 @@
-.box {
+.box-grid {
     width: 500px;
     height: 500px;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.box-result {
+    width: 500px;
+    height: 100px;
     display: flex;
     flex-flow: wrap;
 }
