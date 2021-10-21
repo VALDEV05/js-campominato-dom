@@ -13,8 +13,9 @@ const btnSubmit = document.getElementById("btn-start-game")
 const btnLevel = document.getElementById("levelup")
 const gameContainer = document.getElementById("boxgame")
 let bombs; //bombe
-
+let count = 0;
 let numberCellToAdd;
+let cell;
 
 
 
@@ -33,7 +34,7 @@ btnSubmit.addEventListener("click", function() {
 
     //creo la griglia
     for (let index = 1; index <= numberCellToAdd; index++) {
-        const cell = document.createElement("div")
+        cell = document.createElement("div")
         cell.classList.add("cel-box-" + Math.round(numberCol))
         gameContainer.append(cell)
 
@@ -64,18 +65,15 @@ function cellNumber(difficoltLevel) {
 
 // in base al alla variabile numerototale di celle io andrò a creare un tot di quadrati
 function cellonclick(event) {
-    console.log(event.target.innerText)
+
+    count++;
+    console.log(count)
     let cellclick = parseInt(event.target.innerText)
     if (bombs.includes(cellclick)) {
-        this.style.backgroundColor = "red"
-        alert("hai perso")
-        gameContainer.innerHTML = `<h1 class="mb-0 h-100 w-100 text-center end-game">Hai Perso </h1> `
-
-
+        this.classList.toggle('bomb')
+            /* gameContainer.innerHTML = `<h1 class="mb-0 h-100 w-100 text-center end-game">Hai Perso </h1> ` */
     }
     this.classList.toggle("active")
-
-
 
 }
 
@@ -104,10 +102,11 @@ function bombNumberGenerator(numberCellToAdd) {
             arrayBombs.push(numbersRandomBombs)
         }
     }
-    console.log(arrayBombs);
+    //valori delle bombe
+    console.log(arrayBombs.sort());
     return arrayBombs;
 }
-
+//funzione che genera random il numero delle bombe
 function numsBombGenerator(minNumber = 1, maxNumber = numberCellToAdd) {
 
     const numRandom = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber);
