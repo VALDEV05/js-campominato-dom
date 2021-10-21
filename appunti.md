@@ -1,0 +1,1 @@
+Tutto copiato da js-campionato-grid

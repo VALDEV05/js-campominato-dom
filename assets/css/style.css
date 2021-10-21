@@ -1,0 +1,41 @@
+.box {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.active {
+    background-color: cornflowerblue;
+}
+
+.bomb {
+    background-color: red;
+}
+
+.cel-box-10 {
+    width: 10%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+.cel-box-9 {
+    width: calc(100% / 9);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+.cel-box-7 {
+    width: calc(100% / 7);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
