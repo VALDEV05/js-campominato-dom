@@ -39,3 +39,10 @@
     align-items: center;
     color: black;
 }
+
+.end-game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px dashed black;
+}

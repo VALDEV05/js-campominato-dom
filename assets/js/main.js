@@ -12,37 +12,35 @@ L'utente indica un livello di difficoltà in base al quale viene generata una gr
 const btnSubmit = document.getElementById("btn-start-game")
 const btnLevel = document.getElementById("levelup")
 const gameContainer = document.getElementById("boxgame")
+let bombs; //bombe
+
+let numberCellToAdd;
+
+
+
+
 
 btnSubmit.addEventListener("click", function() {
     difficoltLevel = btnLevel.value
-    const numberCellToAdd = cellNumber(difficoltLevel)
+    numberCellToAdd = cellNumber(difficoltLevel)
+    bombs = bombNumberGenerator(numberCellToAdd)
+
+    //reset
     gameContainer.innerHTML = "";
     const numberCol = Math.sqrt(numberCellToAdd)
 
+
+
+    //creo la griglia
     for (let index = 1; index <= numberCellToAdd; index++) {
-        // const element = numberCellToAdd[x];
         const cell = document.createElement("div")
         cell.classList.add("cel-box-" + Math.round(numberCol))
         gameContainer.append(cell)
 
+        //stampa i numeri
         cell.innerHTML += index
 
-        cell.addEventListener("click", function() {
-            const array = ['1', '2', '3', '4', '5', '6']
-            console.log(`cliccata la cella ${index}`);
-            let cellnumber = index
-            for (let index = 0; index < array.length; index++) {
-                const element = array[index];
-                if (element == cellnumber) {
-                    console.log('bomba');
-
-                } else {
-                    cell.classList.toggle("active")
-                }
-            }
-
-        })
-
+        cell.addEventListener("click", cellonclick)
 
     }
     console.log('Il livello scelto dall`utente è: ' + difficoltLevel)
@@ -64,6 +62,22 @@ function cellNumber(difficoltLevel) {
 
 }
 
+// in base al alla variabile numerototale di celle io andrò a creare un tot di quadrati
+function cellonclick(event) {
+    console.log(event.target.innerText)
+    let cellclick = parseInt(event.target.innerText)
+    if (bombs.includes(cellclick)) {
+        this.style.backgroundColor = "red"
+        alert("hai perso")
+        gameContainer.innerHTML = `<h1 class="mb-0 h-100 w-100 text-center end-game">Hai Perso </h1> `
+
+
+    }
+    this.classList.toggle("active")
+
+
+
+}
 
 /* Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
     --I numeri nella lista delle bombe non possono essere duplicati.--
@@ -81,22 +95,21 @@ function cellNumber(difficoltLevel) {
 
 //generare le bombe
 
-function bombsGenerate(numberCellToAdd) {
-    const bombs = []
+function bombNumberGenerator(numberCellToAdd) {
+    const arrayBombs = []
+    while (arrayBombs.length < 16) {
+        const numbersRandomBombs = numsBombGenerator(1, numberCellToAdd)
 
-    function getRandomNumber(min, max) {
-        return Math.round(Math.random() * (max - min) + min);
-    }
-    //creao array vuoto
-    //ciclare finchè non si arriva alla lunghezza dell'array pari a 16
-
-    while (bombs.length < 16) {
-        //genera un numero tra un min e un max
-        const randomNumber = getRandomNumber(1, numberCellToAdd)
-            //verifica che il numero non è già incluso
-        if (!bombs.includes(randomNumber)) {
-            bombs.push(randomNumber)
+        if (!arrayBombs.includes(numbersRandomBombs)) {
+            arrayBombs.push(numbersRandomBombs)
         }
     }
-    console.log(bombs);
+    console.log(arrayBombs);
+    return arrayBombs;
+}
+
+function numsBombGenerator(minNumber = 1, maxNumber = numberCellToAdd) {
+
+    const numRandom = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber);
+    return numRandom;
 }
